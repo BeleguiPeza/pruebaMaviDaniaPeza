@@ -35,7 +35,13 @@ app.post('/authentication', (req, res) => {
     mysqlConnection.query('SELECT * FROM usuarios WHERE correo = ? AND contrasena = ?', [user.correo, user.contrasena], (err, rows) => {
         if(!err){
             const accessToken = generateAccessToken(user);
-            res.header('Authorization', `Bearer ${accessToken}`.status(200).json(rows));
+            const dataUser = {
+                token: accessToken,
+                Id: rows[0].Id,
+                correo: rows[0].correo,
+                nombre: rows[0].nombre
+            }
+            res.header('Authorization', `Bearer ${accessToken}`).status(200).json(dataUser);
         }else{
             console.log(err);
         }
@@ -102,8 +108,5 @@ app.delete('/client/:id', (req,res) => {
 });
 
 function generateAccessToken(user){
-    return new Promise ((resolve, reject) => {
-        jwt.sign(user, process.env.SECRET, {expiresIn: '1h'});
-        resolve(response);
-    })
+    return jwt.sign(user, process.env.SECRET, {expiresIn: '1h'})
 }
