@@ -27,11 +27,11 @@ app.use((req, res, next) => {
 
 app.listen(3001, () => console.log('Server running at port 3001'));
 
-app.post('/authentication', async(req, res) => {
+app.post('/authentication', (req, res) => {
     let user= req.body;
-    await mysqlConnection.query('SELECT * FROM usuarios WHERE correo = ? AND contrasena = ?', [user.correo, user.contrasena], (err, rows) => {
+    mysqlConnection.query('SELECT * FROM usuarios WHERE correo = ? AND contrasena = ?', [user.correo, user.contrasena], async(err, rows) => {
         if(!err){
-            const accessToken = generateAccessToken(user);
+            const accessToken = await generateAccessToken(user);
             const dataUser = {
                 token: accessToken,
                 Id: rows[0].Id,
@@ -45,13 +45,13 @@ app.post('/authentication', async(req, res) => {
     })
 });
 
-app.get('/clients', async(req, res) => {
+app.get('/clients', (req, res) => {
 
     let token = req.header('Authorization');
     if(!token) return res.json({success: false, error: 'Acceso denegado', code: 401});
     if(!token.startsWith('Bearer')) return res.json({success: false, error: 'Invalid session token', code: 403});
 
-    await mysqlConnection.query('SELECT * FROM clientes', (err, rows) => {
+    mysqlConnection.query('SELECT * FROM clientes', (err, rows) => {
         if(!err){
             res.json(rows);
         }else{
@@ -60,8 +60,8 @@ app.get('/clients', async(req, res) => {
     })
 });
 
-app.get('/client/:id', async(req, res) => {
-    await mysqlConnection.query('SELECT * FROM clientes WHERE Id = ?', [req.params.id], (err, rows) => {
+app.get('/client/:id', (req, res) => {
+    mysqlConnection.query('SELECT * FROM clientes WHERE Id = ?', [req.params.id], (err, rows) => {
         if(!err){
             res.json(rows);
         }else{
@@ -70,9 +70,9 @@ app.get('/client/:id', async(req, res) => {
     })
 });
 
-app.post('/client',  async(req, res) => {
+app.post('/client',  (req, res) => {
     let client = req.body;
-    await mysqlConnection.query('INSERT INTO clientes(nombre, apellidoPaterno, apellidoMaterno, domicilio, correo) VALUES (?, ?, ?, ?, ?)', 
+    mysqlConnection.query('INSERT INTO clientes(nombre, apellidoPaterno, apellidoMaterno, domicilio, correo) VALUES (?, ?, ?, ?, ?)', 
     [client.nombre, client.apellidoPaterno, client.apellidoMaterno, client.domicilio, client.correo], (err) => {
         if(!err){
             res.json('Insert successfuly');
@@ -82,9 +82,9 @@ app.post('/client',  async(req, res) => {
     })
 });
 
-app.put('/client', async (req, res) => {
+app.put('/client', (req, res) => {
     let client = req.body;
-    await mysqlConnection.query('UPDATE clientes SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, domicilio = ?, correo = ? WHERE Id = ?', 
+    mysqlConnection.query('UPDATE clientes SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, domicilio = ?, correo = ? WHERE Id = ?', 
     [client.nombre, client.apellidoPaterno, client.apellidoMaterno, client.domicilio, client.correo, client.Id], (err) => {
         if(!err){
             res.json('Updated successfuly');
@@ -94,8 +94,8 @@ app.put('/client', async (req, res) => {
     })
 });
 
-app.delete('/client/:id', async(req,res) => {
-    await mysqlConnection.query('DELETE FROM clientes WHERE Id = ?', [req.params.id], (err, rows) => {
+app.delete('/client/:id', (req,res) => {
+    mysqlConnection.query('DELETE FROM clientes WHERE Id = ?', [req.params.id], (err, rows) => {
         if(!err){
             res.json('Deleted successfuly');
         }else{
