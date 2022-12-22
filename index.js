@@ -73,7 +73,7 @@ app.get('/client/:id', async(req, res) => {
 app.post('/client',  async(req, res) => {
     let client = req.body;
     await mysqlConnection.query('INSERT INTO clientes(nombre, apellidoPaterno, apellidoMaterno, domicilio, correo) VALUES (?, ?, ?, ?, ?)', 
-    [client.nombre, client.apellidoPaterno, client.apellidoMaterno, client.direccion, client.correo], (err) => {
+    [client.nombre, client.apellidoPaterno, client.apellidoMaterno, client.domicilio, client.correo], (err) => {
         if(!err){
             res.json('Insert successfuly');
         }else{
@@ -85,7 +85,7 @@ app.post('/client',  async(req, res) => {
 app.put('/client', async (req, res) => {
     let client = req.body;
     await mysqlConnection.query('UPDATE clientes SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, domicilio = ?, correo = ? WHERE Id = ?', 
-    [client.nombre, client.apellidoPaterno, client.apellidoMaterno, client.direccion, client.correo, client.Id], (err) => {
+    [client.nombre, client.apellidoPaterno, client.apellidoMaterno, client.domicilio, client.correo, client.Id], (err) => {
         if(!err){
             res.json('Updated successfuly');
         }else{
