@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 23-12-2022 a las 00:26:53
+-- Tiempo de generación: 23-12-2022 a las 00:27:43
 -- Versión del servidor: 5.7.28
 -- Versión de PHP: 7.3.12
 
@@ -21,31 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `crudprueba`
 --
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `clientes`
---
-
-DROP TABLE IF EXISTS `clientes`;
-CREATE TABLE IF NOT EXISTS `clientes` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `apellidoPaterno` varchar(50) NOT NULL,
-  `apellidoMaterno` varchar(50) NOT NULL,
-  `domicilio` varchar(150) NOT NULL,
-  `correo` varchar(50) NOT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `clientes`
---
-
-INSERT INTO `clientes` (`Id`, `nombre`, `apellidoPaterno`, `apellidoMaterno`, `domicilio`, `correo`) VALUES
-(1, 'Belegui', 'Peza', 'Rostro', 'Av. Artes Plasticas #312', 'belegui.peza@gmail.com'),
-(2, 'Manuel', 'Hernandez', 'Lomeli', 'Av. Pomarosa #152 ', 'manuel.hernandez@gmail.com');
 
 -- --------------------------------------------------------
 
